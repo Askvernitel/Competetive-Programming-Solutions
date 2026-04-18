@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+int gcd(int a, int b){ 
+    if(b == 0) return a;
+    return gcd(b, a%b);
+}
+void solve(){
+    int n;
+    cin >> n;
+    int a[n];
+    for(int i =0;i<n;i++){
+        cin >> a[i];
+    }
+    int dp[n+1][n+1];
+    int cnt[n+1][n+1];
+    memset(cnt,0,sizeof(cnt));
+    for(int i =0;i<=n;i++){
+        for(int j =0;j<=n;j++){
+            dp[i][j]=INT_MAX;
+        }
+        dp[i][0]=0;
+        dp[0][i]=0;
+    }
+    for(int i =0;i<=n;i++){
+        for(int j =0;j<=n;j++){
+            if(i+1 < n && gcd(dp[i][j],a[i]) < dp[i+1][j+1]){ 
+                cnt[i+1][j+1]=cnt[i][j]+1;
+                dp[i+1][j+1]=min(gcd(dp[i][j],a[i]),dp[i+1][j+1]);
+            }
+            if(i+1<n && dp[i][j] < dp[i+1][j] && dp[i][j] !=0){
+                cnt[i+1][j]=cnt[i][j]+1;
+                dp[i+1][j] = dp[i][j];
+            }
+            if(i+1<n && dp[i][j] == dp[i+1][j] && dp[i][j] !=0){ 
+                cnt[i+1][j]=min(cnt[i+1][j],cnt[i][j]);
+            }
+            if(i+1 < n && gcd(dp[i][j],a[i]) == dp[i+1][j+1]){
+                cnt[i+1][j+1]=min(cnt[i+1][j+1],cnt[i][j]);
+            }
+        }
+    }
+    int minv =INT_MAX;
+    int c = INT_MAX;
+    for(int i =1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            if(minv >= dp[i][j]){
+                minv=dp[i][j];
+            }
+        }
+    }
+    for(int i =1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            if(minv == dp[i][j]){
+                c=min(c,cnt[i][j]-1);
+            }
+        }
+    }
+
+    for(int i =0;i<=n;i++){
+        for(int j=0;j<=n;j++){
+            cout << dp[i][j] << " ";
+        }
+        cout << '\n';
+    }
+    int ans = c;
+    for(int i =0;i<n;i++){
+        if(a[i] != minv) ans++;
+    }
+
+    cout << ans << '\n';
+
+
+}
+int main(){
+    int tc;
+    cin >> tc;
+
+    while(tc--) solve();
+}

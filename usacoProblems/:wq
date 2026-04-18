@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define F first
+#define S second
+int n;
+int find_arr_min(int arr[]){ 
+    int minv = INT_MAX, ind = 0;
+    for(int i =0;i<n;i++){
+        if(minv >= arr[i]){ 
+            ind = i;
+        }
+    }
+
+    return ind;
+}
+int main(){
+    cin >> n;
+    vector<pair<char, pair<int,int>>> cows(n);
+    for(int i =0;i<n;i++){
+        char dir;
+        int x, y;
+        cin >> dir >> x >> y;
+        cows[i] = {dir, {x, y}};
+    }
+    int cols[n][n];
+    for(int i = 0;i<n;i++)
+        for(int j =0;j<n;j++)
+            cols[i][j] = INT_MAX;
+    for(int i = 0;i<n;i++){
+        char dir = cows[i].F;
+        pair<int,int> cow = cows[i].S;
+        
+        int pos_grass = INT_MAX;
+        for(int j =0;j<n;j++){
+            char cur_dir = cows[j].F;
+            pair<int,int> cur_cow = cows[j].S;
+            if(j == i) continue;
+            if(dir == 'E' && cur_dir == 'E' && cur_cow.S == cow.S && cur_cow.F > cow.F){
+                pos_grass = min(pos_grass, cur_cow.F-cow.F);
+                cols[i][j] = cur_cow.F-cow.F;
+            }else if(dir == 'N' && cur_dir =='N' && cur_cow.F == cow.F && cur_cow.S > cow.S){ 
+                pos_grass = min(pos_grass, cur_cow.S-cow.S);
+                cols[i][j] = cur_cow.S-cow.S;
+            }else{ 
+                if(dir == 'E' && cur_cow.F > cow.F && cur_cow.S < cow.S && cur_cow.F-cow.F > cow.S-cur_cow.S){ 
+                    pos_grass = min(pos_grass, cur_cow.F-cow.F);
+                    cols[i][j] = cur_cow.F-cow.F;
+                }else if(dir == 'N' && cow.F > cur_cow.F && cow.S < cur_cow.S && cow.F-cur_cow.F < cur_cow.S-cow.S){
+                    pos_grass = min(pos_grass, cur_cow.S-cow.S);
+                    cols[i][j] = cur_cow.S-cow.S;
+                }
+            }
+        }
+
+
+
+    }
+
+
+
+    for(int i = 0;i<n;i++){
+
+        for(int j =0;j<n;j++){
+            cout << cols[i][j] << " " ;
+        }
+        cout << endl;
+/*        int idx = find_arr_min(cols[i]);
+        while(cols[idx][find_arr_min(cols[idx])] < cols[i][idx]){
+            cols[i][idx] = INT_MAX;
+            idx = find_arr_min(cols[i]);
+        }
+
+        cout << cols[i][idx]<< '\n';*/
+    }
+}

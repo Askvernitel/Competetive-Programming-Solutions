@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+
+
+signed main(){
+	int n;
+	cin >> n;
+	string a[n];
+	for(int i =0;i<n;i++){
+		cin >> a[i];
+	}
+	map<pair<int, int>, int> m;
+	int ans = 0;
+	for(int i =0;i<n;i++){
+		string s = a[i];
+		int fsum = 0;
+		for(int j =0;j<s.size();j++){
+			fsum+=s[j]-48;
+		}
+		int sum = 0;
+		
+		for(int j =0;j<=s.size();j++){
+			int ksum = fsum-sum;
+			int sz = (int)s.size()-j;
+			if(j-sz > 0 && (j + (j-sz))%2 == 0){
+				m[{sum-ksum, abs(j-sz)}]++;
+			}
+			if(sz-j > 0 && (sz + (sz-j))%2 == 0){ 
+				m[{ksum-sum, abs(sz-j)}]++;
+			}
+			if(j != s.size()) sum+=s[j]-48;
+		}
+		
+	}
+	for(int i =0;i<n;i++){
+		string s= a[i];
+		int fsum = 0;
+		for(int j =0;j<s.size();j++){
+			fsum+=s[j]-48;
+		}
+		ans+=m[{fsum, s.size()}]-1;
+	}
+
+	cout << ans << '\n';
+}

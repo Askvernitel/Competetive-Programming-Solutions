@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+vector<int> ex[104];
+vector<int> langs[104];
+int vis[104];
+int dfs(int cur){
+    for(int x:langs[cur]){ 
+        if(vis[x]) return 0;
+        vis[x]=1;
+    }
+    return 1;
+}
+int main(){
+    int n, m;
+    cin >> n >> m;
+    for(int i =0;i<n;i++){
+        int k;
+        cin >> k;
+
+        for(int j=0;j<k;j++){
+            int v;
+            cin >> v;
+            ex[v]=1;
+//            emps[i].push_back(v);
+            langs[v].push_back(i);
+        }
+
+    }
+    int ans=0;
+    for(int i =1;i<m+1;i++){ 
+        if(!ex[i]) continue;
+        ans += dfs(i);
+    }
+    cout << ans;
+    
+
+}

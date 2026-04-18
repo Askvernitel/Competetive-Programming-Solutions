@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+#include <iterator>
+#define int long long
+using namespace std;
+map<int,set<int>> mp;	
+bool good(int l, int r){ 
+	if(mp[r].size() == 0) return true;
+	return mp[r].lower_bound(l) == mp[r].end();
+}
+void solve(){
+	int n,m;
+	cin>> n >> m;
+	for(int i =0;i<m;i++){
+		int p1, p2;
+		cin >> p1 >> p2;
+		p1--;p2--;
+		if(p1 < p2) swap(p1,p2);
+		mp[p1].insert(p2);
+	}
+	mp[n].insert(INT_MIN);
+	mp[n].insert(n);
+
+	int l = 0;
+	int prev_r = -1;
+	int ans =0;
+	for(int r=0;r<=n;r++){
+		if(!good(l, r)){
+			auto it=prev(mp[r].end());
+			ans+=(((r-l+1)*(r-l))/2);
+			l = *it;
+			
+		}
+	}
+
+	mp = {};
+	cout << ans << '\n';
+}
+signed main(){
+	int tc;
+	cin >> tc;
+
+	while(tc--) solve();
+
+}

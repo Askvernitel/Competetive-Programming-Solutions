@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+void solve(){
+	int n, x;
+	cin >> n >> x;
+
+	int a[n], b[n];
+
+	for(int i =0;i<n;i++) cin >> a[i];
+	for(int i =0;i<n;i++) cin >> b[i];
+	int ca[n];
+	memcpy(ca, a, sizeof(a));
+	sort(a, a+n);
+	sort(b, b+n, greater<int>());
+	map<int,set<int>> m;
+	set<int> sa;	
+	for(int i =0;i<n-x;i++){
+		m[a[i]].insert(b[i]);
+	}
+	for(int i = n-x;i<n;i++){
+		sa.insert(a[i]);
+	}
+
+	for(int i = n-x;i<n;i++){
+		auto it = sa.upper_bound(b[i]);
+	}
+
+}
+int main(){
+	int tc;
+	cin >> tc;
+
+	while(tc--) solve();
+}
