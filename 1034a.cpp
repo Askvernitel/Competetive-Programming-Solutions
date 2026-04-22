@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 
+
+
 using namespace std;
 #define int long long
 vector<int> primes;
@@ -24,13 +26,28 @@ void generate_primes(int N){
         
 
 }
-
+void get_factors_of_lcm(int x, set<int>& facts){ 
+        int d=1;
+        for(int i =2;i*i<=x;i+=d, d=2){ 
+                if(!(x%i)){ 
+                        facts.insert(i);
+                }
+        }
+}
 
 void get_frequency(int* a, int n){
-                
+
+        set<int> lcm_factors;
+        for(int i =0;i<n-1;i++){
+                int l = std::lcm(a[i], a[i+1]);
+
+                get_factors_of_lcm(l, lcm_factors);
+        }
+
+//        vector<int> lcm_factors = get_factors_of_lcm(l);
 
         for(int i =0;i<n;i++){
-                for(int factor:primes){
+                for(int factor:lcm_factors){
                         if(a[i] < factor) break;
                         if(!(a[i]%factor)){ 
                                 m[factor]++;
