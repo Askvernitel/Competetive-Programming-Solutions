@@ -4,13 +4,20 @@ using namespace std;
 
 int x, y;
 
-int gcd(int a, int b){ 
+void gcd(int a, int b){ 
         if(!a){
-
-                return 
+                x = 0;
+                y = 1;
+                return;
         }
+        
 
-        return gcd(b%a, a);
+        gcd(b%a, a);
+
+        int x1 = y;
+        y = x - (y * (b/a));
+        x = x1;
+
 }
 
 
@@ -20,4 +27,6 @@ int main(){
 
 
         gcd(a,b);
+
+        cout << x << " " << y << "\n";
 }

@@ -9,35 +9,47 @@ void solve(){
 
         sort(t.begin(), t.end());
 
-//        cout << t << '\n';
-        
         int m = t.size(), n = s.size();
         string ans;
 
         int cur = 0;
-        map<char, int> remove_elements;
-        for(int i =0;i<m;i++){
-                while(cur < n && t[i] >= s[cur]){ 
-                        ans.push_back(s[cur]);
-                        remove_elements[s[cur]]++;
-                        cur++;
+        map<char,int> st, ss;
+        for(char ch : t){
+                st[ch]++;
+        }
+        for(int i =0;i<n;i++){
+                if(st[s[i]]){
+                        ss[s[i]]++;
+                        st[s[i]]--;
+                }else{
+                        cout << "Impossible\n";
+                        return;
                 }
-                if(remove_elements[t[i]]){
-                        remove_elements[t[i]]--;
+        }
+        s.push_back('z'+1);
+
+        int p = 0;
+        for(int i =0;i<m;i++){
+                if(ss[t[i]]){
+                        ss[t[i]]--;
                         continue;
+                }
+                if(t[i] < s[p]){ 
+                        ans.push_back(t[i]);
+                        continue;
+                }
+
+                while(t[i] >= s[p]){
+                        ans.push_back(s[p]);
+                        p++;
                 }
                 ans.push_back(t[i]);
         }
-        string real_ans;
-        for(int i =0;i<ans.size();i++){
-                if(remove_elements[ans[i]]){
-                        remove_elements[ans[i]]--;
-                        continue;
-                }
-                real_ans.push_back(ans[i]);
+        while(p < n){ 
+                ans.push_back(s[p]);
+                p++;
         }
-        cout << real_ans << '\n';
-
+        cout << ans << '\n';
 }
 int main(){
         int tc;
